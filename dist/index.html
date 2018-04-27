@@ -10,27 +10,83 @@
 </head>
 
 <body>
-    <div ng-app="weatherForecast" ng-controller="searchController as sc">
-        <md-autocomplete md-delay="300" md-selected-item-change="sc.showWeather(item)" md-selected-item="sc.selectedItem" md-search-text="sc.searchText" md-items="item in sc.searchLocation(sc.searchText)"
-            md-item-text="item.description" md-min-length="0" placeholder="Select location" md-autofocus>
-            <md-item-template>
-                <span md-highlight-text="sc.searchText" md-highlight-flags="^i">{{item.description}}</span>
-            </md-item-template>
-            <md-not-found>
-                No states matching "{{sc.searchText}}" were found.
-            </md-not-found>
-        </md-autocomplete>
+<div ng-app="weatherForecast" ng-controller="searchController as sc">
+    <div layout layout-align="center">
+        <div layout="row" layout-align="center center" class="loading-wrapper" ng-show="sc.loading">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
 
-        <div id="map"></div>
+        <div flex-xl="66" flex="100" class="ng-hide fade md-padding" ng-hide="sc.loading">
+            <div layout layout-xs="column" layout-align="center center" class="location-row">
+                <md-autocomplete flex="grow" flex-xs="100" md-delay="300" md-selected-item-change="sc.showWeather(item)"
+                                 md-selected-item="sc.selectedItem"
+                                 md-search-text="sc.searchText" md-items="item in sc.searchLocation(sc.searchText)"
+                                 md-item-text="item.description" md-min-length="1"
+                                 placeholder="Select location to see the weather"
+                                 md-autofocus
+                                 md-input-minlength="3">
+                    <md-item-template>
+                        <span>{{item.description}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No states matching "{{sc.searchText}}" were found.
+                    </md-not-found>
+                </md-autocomplete>
+                <div layout="row" layout-align="center center" layout-align-xs="space-around center" class="location-row">
+                    <md-button class="md-fab md-mini md-primary" ng-click="sc.geolocate()" aria-label="Geolocate"
+                               ng-disabled="sc.geocoderUnavailable">
+                        <md-icon md-svg-src="./img/icons/location-searching.svg"></md-icon>
+                    </md-button>
+                    <md-button flex="noshrink" class="md-raised md-primary" ng-click="sc.storeDefault()"
+                               ng-disabled="!sc.selectedItem">Set As Default
+                    </md-button>
+                </div>
+            </div>
+
+            <md-subheader ng-show="sc.defaultLocation" class="md-no-sticky">
+                Default location: {{ sc.defaultLocation.description }}
+            </md-subheader>
+
+            <div id="map"></div>
+
+            <div layout="column" layout-lg="row" layout-xl="row">
+                <div flex="33" ng-repeat="day in sc.weatherList | limitTo: 3" class="day">
+                    <md-whiteframe class="md-whiteframe-1dp" layout ng-class="{ 'margin': $index > 0 }">
+                        <md-list flex="100">
+                            <md-subheader class="md-no-sticky">{{ day.date | date }}</md-subheader>
+                            <md-divider ng-repeat-start="hour in day.hours"></md-divider>
+                            <md-list-item class="md-3-line" ng-repeat-end>
+                                <img ng-src="{{hour.iconUrl}}" class="md-avatar" alt="{{hour.weather[0].main}}"/>
+                                <div class="md-list-item-text" layout="column">
+                                    <div layout>
+                                        <h3>{{ hour.date | date: 'hh:mm a' }}</h3>
+                                    </div>
+                                    <div layout>
+                                        <h4 flex="50">Temp: {{ hour.main.temp }} &#8457;</h4>
+                                        <h4 flex="50">Pressure: {{ hour.main.pressure }} hPa</h4>
+                                    </div>
+                                    <div layout>
+                                        <p flex="50"><b>{{ hour.weather[0].main }}</b></p>
+                                        <h4 flex="50">Wind speed: {{ hour.wind.speed }} Mph</h4>
+                                    </div>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-whiteframe>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-messages.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.6/angular-material.min.js"></script>
-    <script src="./js/weatherForecast.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-messages.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.6/angular-material.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
+<script src="./js/weatherForecast.js"></script>
 </body>
 
 </html>

@@ -12,7 +12,8 @@ var DEBUG = true;
 gulp.task('default', [
     'js',
     'html',
-    'css'
+    'css',
+    'img'
 ]);
 
 gulp.task('clean', function () {
@@ -51,4 +52,8 @@ gulp.task('css', ['clean'], function() {
             ignoreFiles: ['.min.css']
         })))
         .pipe(gulp.dest(DIST_PATH + '/css'));
+});
+
+gulp.task('img', ['clean'], function() {
+    return gulp.src(SRC_PATH + '/img/**/*').pipe(gulp.dest(DIST_PATH + '/img'));
 });
