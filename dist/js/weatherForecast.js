@@ -248,7 +248,7 @@
     weatherService.$inject = ['$http', 'OWM_API_KEY', '$q'];
 
     function weatherService($http, OWM_API_KEY, $q) {
-        var API_URL = 'http://api.openweathermap.org/data/2.5/';
+        var API_URL = 'https://api.openweathermap.org/data/2.5/';
         var lastParams = null;
         var forecastPromise = null;
 
@@ -288,7 +288,7 @@
         }
 
         function getIconUrl(id) {
-            return "http://openweathermap.org/img/w/" + id + ".png"
+            return "https://openweathermap.org/img/w/" + id + ".png"
         }
 
         return {
