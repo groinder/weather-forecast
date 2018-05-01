@@ -61,12 +61,14 @@
 
             self.geolocate = function geolocate() {
                 if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                        mapService.geocode({
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        }).then(onGeocodeResult);
-                    });
+                    navigator.geolocation.getCurrentPosition(
+                        function (position) {
+                            mapService.geocode({
+                                    lat: position.coords.latitude,
+                                    lng: position.coords.longitude
+                                }
+                            ).then(onGeocodeResult);
+                        });
                 }
             };
 
@@ -96,7 +98,12 @@
 
             function markerMove() {
                 var marker = this;
-                mapService.geocode(marker.getPosition()).then(onGeocodeResult);
+                mapService.geocode(marker.getPosition()).then(
+                    onGeocodeResult,
+                    function (reason) {
+                        alert(reason);
+                    }
+                );
             }
 
             function onGeocodeResult(result) {

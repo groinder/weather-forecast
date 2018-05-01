@@ -57,17 +57,17 @@
                             <md-divider ng-repeat-start="hour in day.hours"></md-divider>
                             <md-list-item class="md-3-line" ng-repeat-end>
                                 <img ng-src="{{hour.iconUrl}}" class="md-avatar" alt="{{hour.weather[0].main}}"/>
-                                <div class="md-list-item-text" layout="column">
+                                <div class="md-list-item-text md-padding" layout="column">
                                     <div layout>
                                         <h3>{{ hour.date | date: 'hh:mm a' }}</h3>
                                     </div>
-                                    <div layout>
-                                        <h4 flex="50">Temp: {{ hour.main.temp }} &#8457;</h4>
-                                        <h4 flex="50">Pressure: {{ hour.main.pressure }} hPa</h4>
+                                    <div layout layout-xs="column">
+                                        <h4 flex="50" flex-xs="100">Temp: {{ hour.main.temp }} &#8457;</h4>
+                                        <h4 flex="50" flex-xs="100">Pressure: {{ hour.main.pressure }} hPa</h4>
                                     </div>
-                                    <div layout>
-                                        <p flex="50"><b>{{ hour.weather[0].main }}</b></p>
-                                        <h4 flex="50">Wind speed: {{ hour.wind.speed }} Mph</h4>
+                                    <div layout layout-xs="column">
+                                        <p flex="50" flex-xs="100"><b>{{ hour.weather[0].main }}</b></p>
+                                        <h4 flex="50" flex-xs="100" flex-order-xs="-1">Wind speed: {{ hour.wind.speed }} Mph</h4>
                                     </div>
                                 </div>
                             </md-list-item>
